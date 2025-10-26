@@ -7,7 +7,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
 return {
-	dir = "~/code/fivem.nvim",
+	dir = "assynu/fivem.nvim",
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"hrsh7th/cmp-nvim-lsp",
