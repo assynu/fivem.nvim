@@ -1,0 +1,42 @@
+name: Update native definitions
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * SUN
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4.0.0
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Generate natives
+        run: |
+          wget https://github.com/thelindat/rage-lua-natives/archive/master.zip -O repo.zip
+          unzip repo.zip
+          cd rage-lua-natives-master
+          pnpm i --frozen-lockfile
+          pnpm start
+          cd ..
+          rm -rf library/natives/*
+          mv -f rage-lua-natives-master/build/cfx/{CFX-NATIVE,GTAV,RDR3} library/natives/
+          rm -rf rage-lua-natives-master
+          rm repo.zip
+
+      - name: Update repository
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff-index --quiet HEAD || git commit -am "ci: generate native definitions"
+          git push

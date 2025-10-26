@@ -69,7 +69,7 @@ function M.setup(opts)
 					trustedFolders = { plugin_root },
 					ignoreDir = { ".vscode", ".git", ".github", "dist", "stream", "node_modules", "web" },
 					library = {
-						plugin_root .. "/lua/libraries/cfx",
+						plugin_root .. "/lua/library",
 					},
 				},
 			},
