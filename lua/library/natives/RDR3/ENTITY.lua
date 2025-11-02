@@ -2232,12 +2232,12 @@ function SetEntityVisible(entity, toggle) end
 ---**`ENTITY` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x669655FFB29EF1A9)  
 ---Sets a material fill level (e.g., stew, mug, chips, jugs).
----Params: p1: 0 or 2; name: depth/degree of fill label name; fillState: 0.0–1.0 (some up to 3.0)
+---Params: p1: 0 or 2; name: depth/degree of fill label name; fillState: 0.0-1.0 (some up to 3.0)
 ---@param entity integer
 ---@param expressionType integer
----@param dofName  string
+---@param dofName string
 ---@param fillState number
-function SetMaterialFillLevelForEntity(entity, expressionType, dofName , fillState) end
+function SetMaterialFillLevelForEntity(entity, expressionType, dofName, fillState) end
 
 ---**`ENTITY` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3AE22DEB5BA5A3E6)  

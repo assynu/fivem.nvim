@@ -78,6 +78,15 @@ function ClearConversationHistoryForScriptedConversation(convoRoot) end
 function CreateNewScriptedConversation(convoRoot) end
 
 ---**`AUDIO` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x72E4D1C4639BC465)  
+---Create a scripted speech to control speech. If handle is less than 0, it's invalid.
+---params struct for ScriptedSpeechParams see: PLAY_PED_AMBIENT_SPEECH_NATIVE
+---Returns scriptedSpeech handle.
+---@param speaker integer
+---@return integer, any
+function CreateNewScriptedPedAmbientSpeech(speaker) end
+
+---**`AUDIO` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xA9A41C1E940FB0E8)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -626,14 +635,6 @@ function N_0x6b7a88a61b41e589(p0) end
 function N_0x6da15746d5cc1a92(p0, p1, p2, p3, p4, p5) end
 
 ---**`AUDIO` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x72E4D1C4639BC465)  
----This native does not have an official description.
----@param p0 integer
----@param p1 any
----@return any
-function N_0x72e4d1c4639bc465(p0, p1) end
-
----**`AUDIO` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x7455CD705F7E933E)  
 ---_AUDIO_IS_* - _AUDIO_TRIGGER*
 function N_0x7455cd705f7e933e() end
@@ -775,13 +776,6 @@ function N_0xa6a3a3f96b8b030e() end
 ---@param p3 number
 ---@param p4 any
 function N_0xabdb4863d3d72021(entity, p1, p2, p3, p4) end
-
----**`AUDIO` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB18FEC133C7C6C69)  
----This native does not have an official description.
----@param p0 any
----@return any
-function N_0xb18fec133c7c6c69(p0) end
 
 ---**`AUDIO` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB93A769B8B726950)  
@@ -1019,7 +1013,8 @@ function PauseScriptedConversation(p0, p1, p2, p3, p4) end
 
 ---**`AUDIO` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xED640017ED337E45)  
----Old name: _PLAY_AMBIENT_SPEECH_AT_COORDS
+---Play a speech from a position.
+---params struct for ScriptedSpeechParams see: PLAY_PED_AMBIENT_SPEECH_NATIVE
 ---@param x number
 ---@param y number
 ---@param z number
@@ -1156,6 +1151,18 @@ function PlaySoundFromPosition(audioName, x, y, z, audioRef, isNetwork, p6, p7, 
 ---@param p7 integer
 ---@param p8 boolean
 function PlaySoundFromPositionWithId(soundId, soundName, x, y, z, soundsetName, p6, p7, p8) end
+
+---**`AUDIO` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB18FEC133C7C6C69)  
+---Play/advance a scripted speech created via _CREATE_NEW_SCRIPTED_PED_AMBIENT_SPEECH and return a status code.
+---Return values:
+---  0 = not ready/invalid/failed
+---  1 = started/playing
+---  2 = finished/consumed (you can drop the handle)
+---Typical usage: poll this in a tick after creating the speech; when it returns 2, clear your handle.
+---@param scriptedSpeech integer
+---@return integer
+function PlaySoundFromScriptedPedAmbientSpeech(scriptedSpeech) end
 
 ---**`AUDIO` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x67C540AA08E4A6F5)  

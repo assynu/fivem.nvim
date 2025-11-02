@@ -568,7 +568,7 @@ function GetPedWaypointProgress(ped) end
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x03D741CB4052E26C)  
 ---Returns the current 'Break Free' prompt progress for a hogtied/knocked-out (writhing) ped.
----Range: 0.0–1.0 (hits 1.0 when the ped breaks free). Returns -1.0 if not applicable.
+---Range: 0.0-1.0 (hits 1.0 when the ped breaks free). Returns -1.0 if not applicable.
 ---@param ped integer
 ---@return number
 function GetPedWritheBreakFreeProgress(ped) end
@@ -779,7 +779,7 @@ function GetTaskMoveNetworkState(ped) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6BA606AB3A83BC4D)  
----Returns 0.0–1.0 progress for the current mount-leap task, or -1.0f if no leap is active.
+---Returns 0.0-1.0 progress for the current mount-leap task, or -1.0f if no leap is active.
 ---Video demo: https://youtu.be/YZuw9lhqDms
 ---@param ped integer
 ---@return number
@@ -986,7 +986,7 @@ function IsPedLeadingHorse(ped) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x508F5053E3F6F0C4)  
----Returns true if the ped’s current 'IK look-at' target is within `radius` of (x, y, z). This checks the active look-at point (head/eyes) — not LOS or heading — and returns false if the ped has no active look-at target. Typical radius range: 1.0–30.0.
+---Returns true if the ped's current 'IK look-at' target is within `radius` of (x, y, z). This checks the active look-at point (head/eyes) — not LOS or heading — and returns false if the ped has no active look-at target. Typical radius range: 1.0-30.0.
 ---@param ped integer
 ---@param x number
 ---@param y number
@@ -5517,7 +5517,7 @@ function TaskVehicleGotoNavmesh(ped, vehicle, x, y, z, speed, behaviorFlag, stop
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x583AE9AF9CEE0958)  
----Returns true if the vehicle’s current drive-to task is targeting the given coordinates (i.e., its active destination matches x,y,z).
+---Returns true if the vehicle's current drive-to task is targeting the given coordinates (i.e., its active destination matches x,y,z).
 ---Useful to avoid reissuing TASK_VEHICLE_DRIVE_TO_DESTINATION_2 when already en route.
 ---@param vehicle integer
 ---@param x number

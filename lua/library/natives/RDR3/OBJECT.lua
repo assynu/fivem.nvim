@@ -1030,7 +1030,7 @@ function SetObjectBurnSpeed(object, speed, p2) end
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCAAF2BCCFEF37F77)  
 ---Writes an interaction state/flags byte and sets an expiry.
 ---Lower 3 bits = timeout preset: 0=none, 1=5s, 2=30s, 3=60s, 4=120s (5=custom, unused here).
----Bits 3–5 = category (0–7). Bit 6 (0x40) = extra behavior flag.
+---Bits 3-5 = category (0-7). Bit 6 (0x40) = extra behavior flag.
 ---Examples: https://pastebin.com/mwAi5iQY
 ---@param object integer
 ---@param presetFlags integer

@@ -364,6 +364,14 @@ function DatabindingRemoveBindingArrayItemByDataContextId(p0, entryId) end
 function DatabindingRemoveDataEntry(entryId) end
 
 ---**`DATABINDING` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6318FB3BE37E11B3)  
+---Remove a UI item from its list by index.
+---Video: https://imgur.com/a/LDAUVkh
+---@param entryId integer | string
+---@param index integer
+function DatabindingRemoveUiItemFromListByIndex(entryId, index) end
+
+---**`DATABINDING` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0AE7138D0541F2DE)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -538,13 +546,6 @@ function N_0x3bf0767cf33fcc88(entryId) end
 ---@param p0 any
 ---@return any
 function N_0x422179c7f6ad9304(p0) end
-
----**`DATABINDING` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6318FB3BE37E11B3)  
----This native does not have an official description.
----@param entryId integer | string
----@param index integer
-function N_0x6318fb3be37e11b3(entryId, index) end
 
 ---**`DATABINDING` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6329C34BEE5BFF4B)  

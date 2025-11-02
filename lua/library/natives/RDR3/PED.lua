@@ -211,7 +211,7 @@ function CanPedBeMounted(ped) end
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0EA9EACBA3B01601)  
 ---Returns true if `listener` can hear `source`.
----If `includeNoiseBoost` is true, the source’s noise radius is applied (easier to hear).
+---If `includeNoiseBoost` is true, the source's noise radius is applied (easier to hear).
 ---It treats the source as louder—its current noise expands the effective hearing range (by subtracting noiseRadius² from dist²), while false uses the baseline distance-only check (stealth).
 ---@param source integer
 ---@param listener integer
@@ -469,6 +469,14 @@ function ComputeSatchelItemForPedCarcass(ped, damageCleanliness, skinningQuality
 ---@param damageCleanliness integer
 ---@return boolean
 function ComputeSatchelItemForPedDamage(p0, pedAttached, damageCleanliness) end
+
+---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCA95924C893A0C91)  
+---Returns ped move blend ratio corresponding to the specified speed
+---@param ped integer
+---@param speed number
+---@return number
+function ComputeSpeedForPedMoveBlendRatio(ped, speed) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5407B7288D0478B7)  
@@ -1494,6 +1502,22 @@ function GetPedDefensiveAreaPosition(ped, p1) end
 function GetPedDefensiveVolume(ped, p1) end
 
 ---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0105FEE8F9091255)  
+---Returns the ped's dirt amount as a scalar in [0.0, 1.0].
+---Notes:
+---- The second parameter is treated as a boolean selector (0 or 1). Internally it indexes a 2-slot graphics/appearance bank (base + 0xB8 * index + 0xE4); Rockstar scripts pass 1.
+---- Use 1 for the "active/composite" layer to match in-game usage.
+---- SP scripts often read, adjust, clamp, then feed back into _SET_PED_DIRT_CLEANED.
+---Example (C++):
+---	float lvl = PED::_GET_PED_DIRT_LEVEL(ped, true);
+---	lvl = std::clamp(lvl + 0.1f, 0.0f, 1.0f);
+---	PED::_SET_PED_DIRT_CLEANED(ped, lvl, -1, true, true);
+---@param ped integer
+---@param useCompositeLayer boolean
+---@return number
+function GetPedDirtLevel(ped, useCompositeLayer) end
+
+---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6FB76442469ABD68)  
 ---Returns ped drunk level
 ---_H* or _I*
@@ -1987,7 +2011,7 @@ function GetShopItemBaseLayers(shopItem, p1, ped, metapedType, p4) end
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x77BA37622E22023B)  
 ---Returns 0 if index invalid/unresolvable; else the shop component hash.
 ---resolveSelection: true -> run the resolver (rebuild from ped meta/outfit - MP “net shop” style); false -> use cached entry only (singleplayer - offline).
----outStatusFlag: Set to 1 if the entry’s internal status byte != 0.
+---outStatusFlag: Set to 1 if the entry's internal status byte != 0.
 ---outWearableState: See _UPDATE_SHOP_ITEM_WEARABLE_STATE
 ---@param ped integer
 ---@param index integer
@@ -3194,14 +3218,6 @@ function KnockPedOffVehicle(ped) end
 ---@param p0 any
 ---@param p1 any
 function N_0x00b380ff2df6ab7a(p0, p1) end
-
----**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0105FEE8F9091255)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@return any
-function N_0x0105fee8f9091255(p0, p1) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x024EC9B649111915)  
@@ -5005,15 +5021,6 @@ function N_0xc991ef46fe323867(ped, p1) end
 ---@param ped integer
 ---@param p1 boolean
 function N_0xc99f104bdf8c7f5a(ped, p1) end
-
----**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCA95924C893A0C91)  
----Returns vehicle speed
----_COMPUTE_*
----@param ped integer
----@param p1 number
----@return number
-function N_0xca95924c893a0c91(ped, p1) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCA95C156C14B2054)  

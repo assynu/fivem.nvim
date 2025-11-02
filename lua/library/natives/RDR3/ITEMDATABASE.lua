@@ -12,6 +12,18 @@ function ItemdatabaseCanEquipItemOnCategory(key, category, slotId) end
 ---**`ITEMDATABASE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x71EFA7999AE79408)  
 ---Returns collectionId to be used with 0x8750F69A720C2E41 (p0) and 0xCBB7B6EDFA933ADE (p0)
+---struct ItemCollectionFilter
+---{
+---	Hash slotId;
+---	Hash slotId2;
+---	Hash tag;
+---	Hash ciCategory;
+---	Hash cost;
+---	Hash unk5;
+---	int flags;
+---	Hash itemType;
+---	Hash ciTag;
+---};
 ---@param comparisonType integer
 ---@return integer, any, integer
 function ItemdatabaseCreateItemCollection(comparisonType) end
@@ -122,7 +134,15 @@ function ItemdatabaseFilloutItemEffectIds(key) end
 
 ---**`ITEMDATABASE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xFE90ABBCBFDC13B2)  
----This native does not have an official description.
+---Outputs item infos.
+---struct ItemInfo
+---{
+---	Hash category;
+---	Hash itemType;
+---	Hash unk2;
+---	Hash model;
+---	Hash award;
+---};
 ---@param key integer | string
 ---@return boolean, any
 function ItemdatabaseFilloutItemInfo(key) end
@@ -255,7 +275,14 @@ function ItemdatabaseGetBundleItemCount(bundleId) end
 
 ---**`ITEMDATABASE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5D48A77E4B668B57)  
----This native does not have an official description.
+---Outputs bundle item info.
+---struct BundleItemInfo
+---{
+---	Hash item;
+---	Hash slotId;
+---	int unk2;
+---	int unk3;
+---};
 ---@param bundleId integer
 ---@param index integer
 ---@return boolean, any, integer
@@ -433,6 +460,21 @@ function ItemdatabaseGetShopLayoutMenuInfoByIndex(layout, menu, index) end
 ---@param index integer
 ---@return boolean, integer
 function ItemdatabaseGetShopLayoutMenuPageKey(layout, menu, index) end
+
+---**`ITEMDATABASE` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xDBEADA0DF5F9AB9F)  
+---Outputs the layout page info at the selected index.
+---struct LayoutPageInfo
+---{
+---	Hash pageKey;
+---	Hash unk1;
+---	BOOL unk2;
+---	int numItems;
+---};
+---@param layout integer | string
+---@param index integer
+---@return boolean, any
+function ItemdatabaseGetShopLayoutPageInfoByIndex(layout, index) end
 
 ---**`ITEMDATABASE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB347C100DF0C9B7F)  
@@ -644,12 +686,4 @@ function N_0xc4146375d8a0b374(bundle, p1, index, p3) end
 ---@param award integer | string
 ---@return boolean, any
 function N_0xd076db9b96faadf1(award) end
-
----**`ITEMDATABASE` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xDBEADA0DF5F9AB9F)  
----This native does not have an official description.
----@param layout integer | string
----@param index integer
----@return boolean, integer
-function N_0xdbeada0df5f9ab9f(layout, index) end
 
