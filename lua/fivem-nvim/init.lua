@@ -69,8 +69,14 @@ function M.setup(opts)
 					trustedFolders = { plugin_root },
 					ignoreDir = { ".vscode", ".git", ".github", "dist", "stream", "node_modules", "web" },
 					library = {
+						vim.env.VIMRUNTIME,
 						plugin_root .. "/lua/library",
 					},
+				},
+				hint = {
+					enable = true,
+					paramName = "All",
+					paramType = true,
 				},
 			},
 		},
