@@ -8,6 +8,8 @@ for creating threads and the built-in `json` library for serialization. It also 
 Lua syntax, including safe navigation operators (`foo?.bar`) and compound assignments (`foo += bar`), to eliminate
 false errors. This allows you to write modern, clean code without editor noise, focusing solely on your logic.
 
+> **Note:** This plugin requires **lua_ls** (Lua Language Server). Make sure it is installed and configured properly in your Neovim setup.
+
 ## Documentation
 
 ### Installation
@@ -56,3 +58,14 @@ return {
     end,
 }
 ```
+
+## Contributing
+
+If you're interested in adding features, improving functionality, or making internal adjustments — **feel free to open a Pull Request**.  
+For bugs, issues, or proposals, please report them through the **GitHub Issues** section so I can address them.
+
+## Disclaimer
+
+This plugin was originally created for my personal configuration, and later adapted into a public plugin.  
+Because of that, the documentation and requirements may not yet be perfect.  
+If you encounter any missing pieces, incorrect behavior, or unclear setup steps, **please let me know** so I can fix and improve it.
