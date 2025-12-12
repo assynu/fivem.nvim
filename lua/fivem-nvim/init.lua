@@ -40,10 +40,8 @@ function M.setup(opts)
 		end
 	end
 
-	local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 	local lsp_settings = {
-		capabilities = capabilities,
 		root_markers = {
 			"fxmanifest.lua",
 			".git",
