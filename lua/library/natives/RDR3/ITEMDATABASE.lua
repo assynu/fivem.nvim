@@ -246,6 +246,13 @@ function ItemdatabaseGetAwardAcquireCostCountFromCostType(award, costtype) end
 function ItemdatabaseGetAwardCostModifiers(award) end
 
 ---**`ITEMDATABASE` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD076DB9B96FAADF1)  
+---This native does not have an official description.
+---@param award integer | string
+---@return boolean, any
+function ItemdatabaseGetAwardInfo(award) end
+
+---**`ITEMDATABASE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3FAA928A79591761)  
 ---Returns iAwardItemCount
 ---@param award integer | string
@@ -679,11 +686,4 @@ function N_0xaa29a5f13b2c20b2(p0, p1) end
 ---@param p3 any
 ---@return boolean
 function N_0xc4146375d8a0b374(bundle, p1, index, p3) end
-
----**`ITEMDATABASE` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD076DB9B96FAADF1)  
----This native does not have an official description.
----@param award integer | string
----@return boolean, any
-function N_0xd076db9b96faadf1(award) end
 

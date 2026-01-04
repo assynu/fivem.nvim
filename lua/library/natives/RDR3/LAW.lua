@@ -155,11 +155,30 @@ function GetHudPlayerCrimeType(player) end
 
 ---**`LAW` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x532C5FDDB986EE5C)  
----This native does not have an official description.
+---Reads one entry from the player's registered-crimes list (oldest -> newest) at the given index.
+---	- Commonly iterated with index 0..23.
+---	- Returns true if the entry exists/was copied into outData.
+---	- Scripts typically check outData.f_10 (reported flag) and use (crimeType, unk7) as inputs to other LAW queries.
+---
+---outData (script struct<11>):
+---	struct RegisteredCrime
+---	{
+---		alignas(8) Hash crimeType;   // outData.f_0
+---		alignas(8) int  bounty;      // outData.f_1
+---		alignas(8) Hash unk2;        // outData.f_2
+---		alignas(8) Any  unk3;        // outData.f_3
+---		alignas(8) Any  unk4;        // outData.f_4
+---		alignas(8) Any  unk5;        // outData.f_5
+---		alignas(8) Any  unk6;        // outData.f_6
+---		alignas(8) int  unk7;        // outData.f_7 (paired with crimeType in scripts)
+---		alignas(8) Any  unk8;        // outData.f_8
+---		alignas(8) Any  unk9;        // outData.f_9
+---		alignas(8) bool wasReported; // outData.f_10
+---	};
 ---@param player integer
----@param p1 integer
----@return boolean, integer
-function GetPlayerRegisteredCrime(player, p1) end
+---@param index integer
+---@return boolean, any
+function GetPlayerRegisteredCrime(player, index) end
 
 ---**`LAW` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x717DA2281DF90855)  

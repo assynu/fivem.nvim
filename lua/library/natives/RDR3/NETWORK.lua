@@ -1397,11 +1397,6 @@ function N_0xfb3205788f8afa3f() end
 function N_0xfc6fcf4c03f1bbf6() end
 
 ---**`NETWORK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xFD4272A137703449)  
----Only used in R* Script startup_clip
-function N_0xfd4272a137703449() end
-
----**`NETWORK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xFD8112109A96877C)  
 ---Note: this native was added in build 1311.23
 function N_0xfd8112109a96877c() end
@@ -3075,6 +3070,11 @@ function NetworkSessionRequestSessionSeamless(flags, seamlessType, userHash) end
 ---@param flags integer
 ---@return boolean
 function NetworkSessionSetPlayerFlags(flags) end
+
+---**`NETWORK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xFD4272A137703449)  
+---Only used in R* Script startup_clip
+function NetworkSessionShutdown() end
 
 ---**`NETWORK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xF20B18A330E6DB5C)  

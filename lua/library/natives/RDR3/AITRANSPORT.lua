@@ -213,13 +213,37 @@ function SetTransportUsageFlags(transportEntity, flags) end
 
 ---**`AITRANSPORT` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xAEE3ADD08829CB6F)  
----This native does not have an official description.
+---Request a ped to enter/join a transport seat. args is a script struct<9> (72 bytes); each field is 8-byte (alignas(8)).
+---
+---struct TaskEnterTransportArgs
+---{
+---	alignas(8) Any     p0;        // unused/reserved in observed scripts
+---	alignas(8) Any     p1;        // unused/reserved in observed scripts
+---	alignas(8) Any     p2;        // unused/reserved in observed scripts
+---	alignas(8) Ped     ped;       // performing ped
+---	alignas(8) Vehicle vehicle;   // target transport
+---	alignas(8) int     seatIndex; // seat to join (scripts use -1 or explicit seat)
+---	alignas(8) int     timeoutMs; // time until forced join/teleport (commonly 20000)
+---	alignas(8) float   pedSpeed;  // blend/speed
+---	alignas(8) int     flags;     // seen values: (1<<30), 1, 16, 1048578 (usage unclear)
+---};
 ---@return any
 function TaskEnterTransport() end
 
 ---**`AITRANSPORT` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC273A5B8488F7838)  
----This native does not have an official description.
+---Request a ped to exit a transport. args is a script struct<7> (56 bytes); each field is 8-byte (alignas(8)).
+---
+---struct TaskExitTransportArgs
+---{
+---	alignas(8) Any     p0;       // unused/reserved in observed scripts
+---	alignas(8) Any     p1;       // unused/reserved in observed scripts
+---	alignas(8) Any     p2;       // unused/reserved in observed scripts
+---	alignas(8) Ped     ped;      // performing ped (e.g. PLAYER_PED_ID())
+---	alignas(8) Vehicle vehicle;  // transport to exit (vehicle or mount entity handle)
+---	alignas(8) float   pedSpeed; // blend/speed
+---	alignas(8) int     flags;    // seen values: (1<<30) and 1 (usage unclear)
+---};
 ---@return any
 function TaskExitTransport() end
 

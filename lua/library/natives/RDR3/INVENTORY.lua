@@ -283,6 +283,23 @@ function InventoryGetInventoryItem(inventoryId, p3) end
 function InventoryGetInventoryItemChild(inventoryId, childIndex) end
 
 ---**`INVENTORY` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9AC53CB6907B4428)  
+---Writes up to maxResults compatible SLOTID_* hashes for item into outSlotIds (int32 array; unused entries are 0). Commonly used to gather valid equip slots for component/decoration items. Returns true on success.
+---Example (C++):
+---	Hash item = joaat("horse_equipment_western_04_stock_new_saddle_005");
+---	int out[30] = {};
+---	if (INVENTORY::_INVENTORY_GET_INVENTORY_ITEM_COMPATIBLE_SLOTS(item, out, 30)) {
+---		for (int i = 0; i < 30 && out[i] != 0; ++i) {
+---			printf("slot[%d] = 0x%08X\n", i + 1, (unsigned)out[i]);
+---		}
+---	}
+---Typical result for the sample item includes: SLOTID_HORSE_SADDLEBAG, SLOTID_HORSE_BEDROLL, SLOTID_HORSE_HORN, SLOTID_HORSE_STIRRUP, SLOTID_HORSE_BLANKET, SLOTID_HORSE_REINS, SLOTID_HORSE_SEAT, SLOTID_HORSE_FENDER, SLOTID_HORSE_SKIRT, SLOTID_HORSE_CANTLE, SLOTID_HORSE_LANTERN, SLOTID_HORSE_MASK. Note (FiveM DataView): read each int at an 8-byte stride (i*8).
+---@param item integer | string
+---@param maxResults integer
+---@return boolean, integer
+function InventoryGetInventoryItemCompatibleSlots(item, maxResults) end
+
+---**`INVENTORY` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC97E0D2302382211)  
 ---This native does not have an official description.
 ---@param inventoryId integer
@@ -623,14 +640,6 @@ function N_0x75cfac49301e134f(databindingEntryId, p1, p2) end
 ---@param ped integer
 ---@return any
 function N_0x951847cef3d829ff(p0, ped) end
-
----**`INVENTORY` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9AC53CB6907B4428)  
----p1 (out) and p2 (in) are both script arrays?
----item: can be a component item, see SHOP_CATALOG_BUILD_LIST_OF_WEAPON_COMPONENTS
----@param item integer | string
----@return boolean, any, any
-function N_0x9ac53cb6907b4428(item) end
 
 ---**`INVENTORY` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9B4E793B1CB6550A)  

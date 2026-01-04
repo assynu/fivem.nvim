@@ -157,6 +157,17 @@ function GetFilenameForAudioConversation(labelName) end
 function GetHudScreenPositionFromWorldPosition(worldX, worldY, worldZ) end
 
 ---**`HUD` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x7EC0D68233E391AC)  
+---Returns the current state value for a HUD component slot ID.
+---Enum: https://github.com/Halen84/RDR3-Native-Flags-And-Enums/tree/main/eHudVisibilitySlotType 
+---Notes:
+---- Component-specific semantics: the same numeric state can mean different things depending on the component.
+---- Used heavily as a gating signal for prompts/targeting/UI updates (e.g., return 0 when 21==2 or 54==2; block logic when 10==2 or 10==4).
+---@param hudSlot integer
+---@return integer
+function GetHudVisibilitySlotState(hudSlot) end
+
+---**`HUD` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3429670F9B9EF2D3)  
 ---_GET_FILENAME_* - _GET_FRAME*
 ---@param label string
@@ -446,13 +457,6 @@ function N_0x53ce46c01a089da1(prompt, p1) end
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5651516D947ABC53)  
 ---This native does not have an official description.
 function N_0x5651516d947abc53() end
-
----**`HUD` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x7EC0D68233E391AC)  
----This native does not have an official description.
----@param p0 integer
----@return integer
-function N_0x7ec0d68233e391ac(p0) end
 
 ---**`HUD` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x8A59D44189AF2BC5)  

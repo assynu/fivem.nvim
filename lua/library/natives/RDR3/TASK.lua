@@ -132,6 +132,17 @@ function AssistedMovementSetRouteProperties(route, props) end
 function AssociatePropWithScenario(scenario, entity, propName, p3) end
 
 ---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3ACC128510142B9D)  
+---Signed arclength (meters) from the start of a loaded waypoint recording to the point on the path nearest to (x,y,z).
+---Negative before the first node; clamped to total length past the last node. Recording must be requested/loaded.
+---@param waypointRecording string
+---@param x number
+---@param y number
+---@param z number
+---@return number
+function CalculateWaypointDistanceFromStart(waypointRecording, x, y, z) end
+
+---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x2D19BC4DF626CBE7)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -400,6 +411,17 @@ function EvaluatePedCarriableStruggleAvailable(ped) end
 function FindModelForItem(item) end
 
 ---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x244430C13BA5258E)  
+---Animals only. Returns the nearest ped around `animalPed` matching the life-state filters (e.g., use (false,true,0) to find a nearby corpse for TASK_EAT).
+---Last flag appears to bias predators/fish toward dead targets (uncertain).
+---@param animalPed integer
+---@param aliveOnly boolean
+---@param deadOnly boolean
+---@param preferDeadPredators boolean
+---@return integer
+function FindNearestPedAroundAnimal(animalPed, aliveOnly, deadOnly, preferDeadPredators) end
+
+---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xF533D68FF970D190)  
 ---This native does not have an official description.
 ---@param xPos number
@@ -439,6 +461,12 @@ function GetHerbCompositeNumEntities(compositeId) end
 ---@param ped integer
 ---@return number
 function GetHogtieEscapeTimer(ped) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5952DFA38FA529FE)  
+---Returns whether the “Hold to Reel [Fishing]” gameplay setting is currently enabled.
+---@return boolean
+function GetHoldToReelSettingEnabled() end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0CCFE72B43C9CF96)  
@@ -619,6 +647,12 @@ function GetRansackScenarioContainerRemainingLootCount(entity) end
 ---@param ped integer
 ---@return any
 function GetRansackScenarioPointPedIsUsing(ped) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x351F74ED6177EBE7)  
+---Returns the targeted revivable horse (critically injured/writhing) when the revive prompt is active; 0 if none.
+---@return integer
+function GetRevivableHorse() end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xA8452DD321607029)  
@@ -823,6 +857,22 @@ function GetVehicleWaypointTargetPoint(vehicle) end
 ---@param p1 integer
 ---@return number
 function GetWaypointDistanceAlongRoute(waypointRecording, p1) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x78D8C1D4EB80C588)  
+---Returns the maximum (target) whistle/call distance associated with the next horse bonding level.
+---Used together with the current level's minimum to derive an effective whistle range based on the horse's bonding progress toward the next rank.
+---@param bondingLevel integer
+---@return number
+function GetWhistleRangeMaxForBondingLevel(bondingLevel) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xEB67D4E056C85A81)  
+---Returns the minimum (baseline) whistle/call distance for the given horse bonding level.
+---This value represents the lower bound used when computing whether a horse is considered "near" or "far" relative to the player, and is interpolated against the next level's max.
+---@param bondingLevel integer
+---@return number
+function GetWhistleRangeMinForBondingLevel(bondingLevel) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB8F52A3F84A7CC59)  
@@ -1044,6 +1094,14 @@ function IsPedStill(ped) end
 ---@param ped integer
 ---@return boolean
 function IsPedWalking(ped) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x756C7B4C43DF0422)  
+---Checks for the revive-horse prompt.
+---strict=true: prompt must be usable (enabled and inputs not blocked). strict=false: true if the prompt simply exists (may be disabled).
+---@param strict boolean
+---@return boolean
+function IsRevivableHorsePromptVisible(strict) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x367A09DED4E05B99)  
@@ -1273,15 +1331,6 @@ function N_0x1a7d63cb1b0bb223(p0) end
 function N_0x1ac5a8ab50cfaa33(p0) end
 
 ---**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x1D125814EBC517EB)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@param p2 any
----@param p3 any
-function N_0x1d125814ebc517eb(p0, p1, p2, p3) end
-
----**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x1F298C7BD30D1240)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -1322,26 +1371,6 @@ function N_0x22cdbf317c40a122(ped) end
 ---@param p0 any
 ---@param p1 any
 function N_0x23767d80c7eed7c6(p0, p1) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x2416EC2F31F75266)  
----This native does not have an official description.
----@param entity integer
----@param targetEntity integer
----@param duration integer
----@param p3 any
----@param p4 any
-function N_0x2416ec2f31f75266(entity, targetEntity, duration, p3, p4) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x244430C13BA5258E)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@param p2 any
----@param p3 any
----@return any
-function N_0x244430c13ba5258e(p0, p1, p2, p3) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x28EF780BDEA8A639)  
@@ -1423,12 +1452,6 @@ function N_0x30b391915538ebe2(p0) end
 function N_0x31bb338f64d5c861(ped, p1) end
 
 ---**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x351F74ED6177EBE7)  
----This native does not have an official description.
----@return integer
-function N_0x351f74ed6177ebe7() end
-
----**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x358A1A751B335A11)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -1440,16 +1463,6 @@ function N_0x358a1a751b335a11(p0) end
 ---@param p0 any
 ---@return any
 function N_0x370f57c47f68ebca(p0) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3ACC128510142B9D)  
----This native does not have an official description.
----@param waypointRecording string
----@param x number
----@param y number
----@param z number
----@return number
-function N_0x3acc128510142b9d(waypointRecording, x, y, z) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3BBEECC5B8F35318)  
@@ -1471,20 +1484,6 @@ function N_0x3f8387db1b9f31b7(p1) end
 ---@param p0 any
 ---@return any
 function N_0x3feb770d8ed9047a(p0) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3FFCD7BBA074CC80)  
----This native does not have an official description.
----@param ped integer
----@param p1 any
----@param p2 any
----@param p3 any
----@param p4 any
----@param p5 any
----@param p6 any
----@param p7 any
----@param p8 any
-function N_0x3ffcd7bba074cc80(ped, p1, p2, p3, p4, p5, p6, p7, p8) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x41323F4E0C4AE94B)  
@@ -1560,18 +1559,6 @@ function N_0x4f57397388e1dff8() end
 function N_0x50aa09a0da64e73c(p0, p1, p2, p3, p4, p5, p6) end
 
 ---**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x517D01BF27B682D1)  
----This native does not have an official description.
----@param ped integer
----@param entity integer
----@param p2 number
----@param p3 number
----@param p4 number
----@param p5 number
----@param p6 integer
-function N_0x517d01bf27b682d1(ped, entity, p2, p3, p4, p5, p6) end
-
----**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5217B7B6DB78E1F3)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -1580,12 +1567,6 @@ function N_0x517d01bf27b682d1(ped, entity, p2, p3, p4, p5, p6) end
 ---@param p3 any
 ---@param p4 any
 function N_0x5217b7b6db78e1f3(p0, p1, p2, p3, p4) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5952DFA38FA529FE)  
----This native does not have an official description.
----@return any
-function N_0x5952dfa38fa529fe() end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x59AE5CA4FFB4E378)  
@@ -1662,6 +1643,7 @@ function N_0x673a8779d229ba5a(p0, p1, p2, p3, p4, p5) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x678D3226CF70B9C8)  
+---Returns the entity (object/prop) that the ped is currently inspecting or about to interact with during an some item interaction sequence.
 ---Only used in R* SP Script beat_washed_ashore
 ---Returns Object prop for TASK::_TASK_ITEM_INTERACTION_2
 ---@param ped integer
@@ -1709,13 +1691,6 @@ function N_0x748d5e0d2a1a4c61(p0, p1, p2) end
 function N_0x74f0209674864cbd() end
 
 ---**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x756C7B4C43DF0422)  
----This native does not have an official description.
----@param p0 boolean
----@return boolean
-function N_0x756c7b4c43df0422(p0) end
-
----**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x764DB5A48390FBAD)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -1728,25 +1703,6 @@ function N_0x764db5a48390fbad(p0, p1) end
 ---@param p0 any
 ---@return any
 function N_0x76610d12a838ebde(p0) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x78D8C1D4EB80C588)  
----This native does not have an official description.
----@param p0 any
----@return any
-function N_0x78d8c1d4eb80c588(p0) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x79197F7D2BB5E73A)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@param p2 any
----@param p3 any
----@param p4 any
----@param p5 any
----@return any
-function N_0x79197f7d2bb5e73a(p0, p1, p2, p3, p4, p5) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x7CB99FADDE73CD1B)  
@@ -1810,13 +1766,6 @@ function N_0x885d19ac2b6fbff4(p0, p1) end
 ---This native does not have an official description.
 ---@param ped integer
 function N_0x88fd60d846d9cd63(ped) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x8B1FDF63C3193EDA)  
----This native does not have an official description.
----@param ped integer
----@param p1 number
-function N_0x8b1fdf63c3193eda(ped, p1) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x8E1DDE26D270CC5E)  
@@ -2229,13 +2178,6 @@ function N_0xe9a6400d1a0e7a55(p0) end
 function N_0xeaf87da2be78a15b(p0, p1) end
 
 ---**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xEB67D4E056C85A81)  
----This native does not have an official description.
----@param p0 any
----@return any
-function N_0xeb67d4e056c85a81(p0) end
-
----**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xEC516FE805D2CB2D)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -2308,13 +2250,6 @@ function N_0xfe5d28b9b7837cc1(p0, p1, p2, p3) end
 ---@param p0 any
 ---@param p1 any
 function N_0xff8afca532b500d4(p0, p1) end
-
----**`TASK` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xFFB520A3E16F7B7B)  
----This native does not have an official description.
----@param ped integer
----@param p1 number
-function N_0xffb520a3e16f7b7b(ped, p1) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xA36BFB5EE89F3D82)  
@@ -2468,6 +2403,18 @@ function ResetScenarioScript(scenario) end
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0D40EE2A7F2B2D6D)  
 ---This native does not have an official description.
 function ResetScenarioTypesEnabled() end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x517D01BF27B682D1)  
+---Set a ped's boat-local offset and/or facing (degrees). Boats only. Flags: 0=apply both; 1=heading only (lock offset); 2=offset only (lock heading); 3=apply neither.
+---@param ped integer
+---@param boat integer
+---@param offsetX number
+---@param offsetY number
+---@param offsetZ number
+---@param heading number
+---@param flags integer
+function SetAboardPedBoatPose(ped, boat, offsetX, offsetY, offsetZ, heading, flags) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x87B66D77D545DB66)  
@@ -3724,16 +3671,16 @@ function TaskFollowToOffsetOfEntity(ped, entity, offsetX, offsetY, offsetZ, move
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0759591819534F7B)  
----This native does not have an official description.
+---Follow a loaded waypoint recording. startIndex/endIndex bound the segment; patrol makes it loop back-and-forth; aimWeapon sets aiming stance; durationMs=-1 for natural pacing, otherwise caps time (snaps to end on expiry).
 ---@param ped integer
 ---@param waypointRecording string
----@param p2 integer
----@param flag integer
----@param p4 integer
----@param p5 boolean
----@param p6 any
----@param p7 integer
-function TaskFollowWaypointRecording(ped, waypointRecording, p2, flag, p4, p5, p6, p7) end
+---@param startIndex integer
+---@param flags integer
+---@param endIndex integer
+---@param patrol boolean
+---@param aimWeapon boolean
+---@param durationMs integer
+function TaskFollowWaypointRecording(ped, waypointRecording, startIndex, flags, endIndex, patrol, aimWeapon, durationMs) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0CFC13EBC19BCA52)  
@@ -3753,6 +3700,18 @@ function TaskFollowWaypointRecordingAdvanced(ped, p1) end
 ---@param p5 integer
 ---@param p6 boolean
 function TaskFollowWaypointRecordingAtOffset(ped, waypointRecording, p2, p3, p4, p5, p6) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x2416EC2F31F75266)  
+---Makes a ped that is already aiming keep firing at `targetEntity` for `durationMs`.
+---Uses projectile logic if holding a throwable/bow, otherwise gun logic. `p3` unused; `p4` is an extra mode flag (observed 0/1).
+---_TASK_FORCE_M*
+---@param ped integer
+---@param targetEntity integer
+---@param durationMs integer
+---@param p3 any
+---@param p4 boolean
+function TaskForceFireAtEntityWhileAiming(ped, targetEntity, durationMs, p3, p4) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x4F056E1AFFEF17AB)  
@@ -4296,6 +4255,20 @@ function TaskKnockedOut(ped, p1, permanently) end
 ---@param koTimeOffset number
 ---@param flags integer
 function TaskKnockedOutAndHogtied(ped, koTimeOffset, flags) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xFFB520A3E16F7B7B)  
+---Sets the knockout timer in seconds for a ped that is currently in the knocked-out state.
+---@param ped integer
+---@param koTimeDuration number
+function TaskKnockedOutSetDuration(ped, koTimeDuration) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x8B1FDF63C3193EDA)  
+---Sets an unknown float tuning setting for a ped that is currently in the knocked-out state.
+---@param ped integer
+---@param tuning number
+function TaskKnockedOutSetTuning(ped, tuning) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC716EB2BD16370A3)  
@@ -5328,6 +5301,15 @@ function TaskUseScenarioPoint(ped, scenario, conditionalAnim, p3, p4, p5, p6, p7
 function TaskUseScenarioPoint_2(ped, ped2, p2, p3, p4, p5, p6, p7) end
 
 ---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x1D125814EBC517EB)  
+---Adds a waypoint to an AI vehicle's active drive-to-destination task; only the last 3 points are kept (ignored if no such task).
+---@param vehicle integer
+---@param x number
+---@param y number
+---@param z number
+function TaskVehicleAddNextDestination(vehicle, x, y, z) end
+
+---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x447C1E9EF844BC0F)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -5693,6 +5675,19 @@ function TaskWeapon(ped) end
 function TaskWhistleAnim(ped, audPedWhistleType, p2) end
 
 ---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x79197F7D2BB5E73A)  
+---Smoothly transitions an active scenario actor (ped) into a specific conditional / clipset defined in the scenario's conditional-anim graph, breaking or restarting the scenario.
+---Returns `true` if the transition was successfully triggered, or `false` if it failed.
+---@param ped integer
+---@param scenarioPoint integer
+---@param clipsetDict string
+---@param clipName string
+---@param fromConditionalAnim string
+---@param flags integer
+---@return boolean
+function TransitionScenarioToConditionalAnim(ped, scenarioPoint, clipsetDict, clipName, fromConditionalAnim, flags) end
+
+---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x67406F2C8F87FC4F)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -5708,6 +5703,20 @@ function UncuffPed(ped) end
 ---@param p4 string
 ---@param p5 number
 function UnhogtiePed(ped, flags, getupSetHash, p3, p4, p5) end
+
+---**`TASK` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3FFCD7BBA074CC80)  
+---In-place update for a running follow-to-offset/go-to task: sets new target coords + local offset, with speed and arrival tolerance (foot or mount; no effect if no compatible task).
+---@param ped integer
+---@param targetX number
+---@param targetY number
+---@param targetZ number
+---@param offsetX number
+---@param offsetY number
+---@param offsetZ number
+---@param speed number
+---@param tolerance number
+function UpdateTaskGoToCoordWithOffset(ped, targetX, targetY, targetZ, offsetX, offsetY, offsetZ, speed, tolerance) end
 
 ---**`TASK` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xA98FCAFD7893C834)  

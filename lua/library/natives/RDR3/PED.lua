@@ -452,6 +452,15 @@ function ClonePedToTarget(ped, targetPed) end
 function ComputeLootForPedCarcass(model, damageCleanliness, skinningQuality) end
 
 ---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x46BF2A810679D6E6)  
+---Returns estimated max speed (m/s) for the ped move blend ratio. Move blend ratio is in a range of 0.0 - 3.0.
+---_COMPUTE_S*
+---@param ped integer
+---@param maxMoveBlendRatio number
+---@return number
+function ComputePedMoveBlendRatioForMaxSpeed(ped, maxMoveBlendRatio) end
+
+---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6B89FAA36FC909A3)  
 ---Related to dead animals items/loots
 ---Notice: skinningQuality is partially calculated using pedQuality
@@ -472,7 +481,7 @@ function ComputeSatchelItemForPedDamage(p0, pedAttached, damageCleanliness) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCA95924C893A0C91)  
----Returns ped move blend ratio corresponding to the specified speed
+---Returns ped move blend ratio corresponding to the specified speed.
 ---@param ped integer
 ---@param speed number
 ---@return number
@@ -910,13 +919,23 @@ function GetBlockingOfNonTemporaryEvents(ped) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x608BC6A6AACD5036)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@param p2 any
----@param p3 any
----@return any
-function GetCarriedAttachedInfoForSlot(p0, p1, p2, p3) end
+---Outputs carriable info for a ped's carriable slot (see TASK_CARRIABLE slot indices). p3 is always 0 in R* scripts. Returns true if outData was filled.
+---
+---outData: script struct<4> (32 bytes); each field is 8-byte (alignas(8)):
+---	struct CarriedAttachedInfo
+---	{
+---		alignas(8) Hash   model;         // carried entity model
+---		alignas(8) Hash   carryConfig;   // carry config (e.g. DEAD_CARRIABLE_FOX)
+---		alignas(8) int    carriableSlot; // slot index queried
+---		alignas(8) Entity entity;        // carried entity handle (0 if none)
+---	};
+---
+---Example image: https://imgur.com/a/2wjt6PT
+---@param ped integer
+---@param carriableSlot integer
+---@param p3 integer
+---@return boolean, any
+function GetCarriedAttachedInfoForSlot(ped, carriableSlot, p3) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6F43C351A5D51E2F)  
@@ -1640,7 +1659,7 @@ function GetPedIsGrappling(ped) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x2C76FA0E01681F8D)  
----https://github.com/Halen84/RDR3-Native-Flags-And-Enums/tree/main/Lasso%20Hogtie%20Flags
+---https://github.com/Halen84/RDR3-Native-Flags-And-Enums/tree/main/CLassoHogtieFlags__Flags
 ---https://github.com/femga/rdr3_discoveries/tree/master/AI/LASSO_HOGTIE_FLAG
 ---@param ped integer
 ---@param flagId integer
@@ -2214,6 +2233,14 @@ function HasPedBeenShovedRecently(ped, ms) end
 ---@param name string
 ---@return boolean
 function HasPedEmotionalPresetLoaded(ped, name) end
+
+---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB7DBB2986B87E230)  
+---True if the ped fired a weapon within the last `seconds` (seconds -> compared in ms internally). Returns false if no recent shot is recorded.
+---@param ped integer
+---@param seconds number
+---@return boolean
+function HasPedShotRecently(ped, seconds) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xBA208A8D6399A3AC)  
@@ -3227,12 +3254,6 @@ function N_0x00b380ff2df6ab7a(p0, p1) end
 function N_0x024ec9b649111915(ped, p1) end
 
 ---**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x028E7B3BBA0BD2FC)  
----_SET_ST* - _SET_SW*
----@param ped integer
-function N_0x028e7b3bba0bd2fc(ped) end
-
----**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x02E741E19E39628C)  
 ---_SET_PLAYER_SN* - _SET_PLAYER_STAMINA*
 ---@param ped integer
@@ -3798,15 +3819,6 @@ function N_0x41c23a8e6b344867(ped, p1) end
 function N_0x45fea6d5539bd474(ped, p1) end
 
 ---**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x46BF2A810679D6E6)  
----Returns vehicle (desired) speed
----_COMPUTE_(VEHICLE_SPEED_USING_BLEND_RATIO?)*
----@param ped integer
----@param maxMoveBlendRatio number
----@return number
-function N_0x46bf2a810679d6e6(ped, maxMoveBlendRatio) end
-
----**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x49DADFC4CD808B0A)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -4053,10 +4065,10 @@ function N_0x600bbdd29820370c(ped) end
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x604E1010E3162E86)  
 ---This native does not have an official description.
----@param p0 any
----@param p1 any
----@param p2 any
-function N_0x604e1010e3162e86(p0, p1, p2) end
+---@param ped integer
+---@param propItemId string
+---@param p2 string
+function N_0x604e1010e3162e86(ped, propItemId, p2) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x606D529DADA3C940)  
@@ -4115,24 +4127,6 @@ function N_0x6a190b94c2541a99(p0) end
 ---This native does not have an official description.
 ---@param p0 any
 function N_0x6a489892e813951a(p0) end
-
----**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6B67320E0D57856A)  
----This native does not have an official description.
----@param ped integer
----@param p2 integer
----@param p3 boolean
----@return any
-function N_0x6b67320e0d57856a(ped, p2, p3) end
-
----**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6DB875AFC584FA32)  
----Only used in R* SP Script winter1: p1 = 5000
----_SET_PED_M*
----@param ped integer
----@param p1 integer
----@return any
-function N_0x6db875afc584fa32(ped, p1) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6E8B87139854022D)  
@@ -4644,12 +4638,6 @@ function N_0x9bbeaf8b0c007f1e(ped, p1) end
 function N_0x9d8dfe2de9cb4dfc(ped) end
 
 ---**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9E3842E5DAD69F80)  
----Only used in SP R* Script loanshark_hunter
----@param volume integer
-function N_0x9e3842e5dad69f80(volume) end
-
----**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9E66708B2B41F14A)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -4872,21 +4860,6 @@ function N_0xb4b7c92fce7347b7(ped) end
 function N_0xb65927f861e7ae39(ped, p1) end
 
 ---**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB7DBB2986B87E230)  
----This native does not have an official description.
----@param ped integer
----@param p1 number
----@return boolean
-function N_0xb7dbb2986b87e230(ped, p1) end
-
----**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB8AB265426CFE6DD)  
----_SET_HO*
----@param ped integer
----@param p1 boolean
-function N_0xb8ab265426cfe6dd(ped, p1) end
-
----**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB8E2D655E1D5BD39)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -5087,15 +5060,6 @@ function N_0xcd9e5f94a2f38683(ped, p1) end
 function N_0xcdfb8c04d4c95d9b(p0, p1, p2, p3) end
 
 ---**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCE7A6C1D5CDE1F9D)  
----This native does not have an official description.
----@param ped integer
----@param object integer
----@param propName string
----@param animName string
-function N_0xce7a6c1d5cde1f9d(ped, object, propName, animName) end
-
----**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCF0B19806473D324)  
 ---_SET_PED_COMBAT_*
 ---@param ped integer
@@ -5213,14 +5177,6 @@ function N_0xd8ceeed54c672b5d(p0, p1, p2, p3, p4, p5, p6) end
 ---@param p3 any
 ---@return any
 function N_0xd97bc27ac039f681(p0, p1, p2, p3) end
-
----**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xDC91F22F09BC6C2F)  
----Used in Script Function MP_MAIN_OFFLINE__INITIALIZE_GAME
----_SET_RELATIONSHIP_*
----@param group integer | string
----@param p1 boolean
-function N_0xdc91f22f09bc6c2f(group, p1) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xDD9540E7B1C9714F)  
@@ -5360,11 +5316,11 @@ function N_0xe737d5f14304a2ec(ped, player, p2) end
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xE8ABE3B73FC7FE17)  
 ---This native does not have an official description.
----@param p0 any
----@param p1 any
----@param p2 any
----@param p3 any
-function N_0xe8abe3b73fc7fe17(p0, p1, p2, p3) end
+---@param ped integer
+---@param targetEntity integer
+---@param propItemId string
+---@param conditionalAnimName string
+function N_0xe8abe3b73fc7fe17(ped, targetEntity, propItemId, conditionalAnimName) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xE9E06EA514A69061)  
@@ -5661,6 +5617,33 @@ function PedSetSimplePlayerMemory(ped, memoryType) end
 function PedWasKilledByHeadshot(ped) end
 
 ---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCE7A6C1D5CDE1F9D)  
+---Plays a conditional locomotion animation with a prop item (commonly used for carry/attach interactions like crates).
+---
+---Notes:
+---- propItemId is a ConditionalAnims.propitem identifier (e.g. "P_CS_CRATETNT01X_PH_R_HAND").
+---- conditionalAnimName is the conditional locomotion anim name/key (e.g. "LOCO_ATTACH_CRATE_TNT").
+---- targetEntity is the linked/context entity (often the object being manipulated).
+---- This primarily drives the conditional anim + propitem state; scripts often still attach/detach the physical entity manually.
+---- Pair with _REMOVE_CONDITIONAL_ANIM_PROPITEM to stop/clear the state.
+---- Example video: https://imgur.com/a/1H3xmbv
+---@param ped integer
+---@param targetEntity integer
+---@param propItemId string
+---@param conditionalAnimName string
+function PropitemPlayConditionalAnimWithObject(ped, targetEntity, propItemId, conditionalAnimName) end
+
+---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6B67320E0D57856A)  
+---Outputs the carried ped.
+---Params: p2 is alsways 2, p3 is always false.
+---@param ped integer
+---@param p2 integer
+---@param p3 boolean
+---@return integer
+function RefreshCarriedPedForPed(ped, p2, p3) end
+
+---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x4642182A298187D0)  
 ---Queries/refreshes the current 'carry' action for a ped and (optionally) returns involved entities.
 ---Usage/Example: https://pastebin.com/qVstcVfz
@@ -5758,6 +5741,18 @@ function ReleasePedVisibilityTracking(ped) end
 function ReleaseTexture(textureId) end
 
 ---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3A50753042B6891B)  
+---Stops and clears a running conditional locomotion animation state on the ped for the given prop item id (started via _PROPITEM_PLAY_CONDITIONAL_ANIM_WITH_OBJECT).
+---
+---Notes:
+---- Ends the conditional locomotion/propitem state; it does not delete/detach any physical object entity.
+---
+---Old name: _REMOVE_PED_PROP
+---@param ped integer
+---@param propItemId string
+function RemoveConditionalAnimPropitem(ped, propItemId) end
+
+---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x87247BC60B60BED8)  
 ---Removes gravity well by handle returned from 0x4F5EBE70081E5A20
 ---@param handle integer
@@ -5838,13 +5833,6 @@ function RemovePedFromMount(ped, p1, p2) end
 ---@param textureId integer
 ---@param overlayId integer
 function RemovePedOverlay(textureId, overlayId) end
-
----**`PED` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3A50753042B6891B)  
----This native does not have an official description.
----@param ped integer
----@param propName string
-function RemovePedProp(ped, propName) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0CAB404CD2DB41F5)  
@@ -6159,7 +6147,6 @@ function SetAccuracyAgainstLocalPlayerModifier(ped, modifier) end
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xAAB86462966168CE)  
 ---Related to _0x704C908E9C405136 for component loading
 ---Can be used to fix missing outfit changes, always paired with _UPDATE_PED_VARIATION
----_S*
 ---Doesn't actually return anything.
 ---@param ped integer
 ---@param isMP boolean
@@ -6339,6 +6326,13 @@ function SetHealthRechargeMultiplier(ped, multiplier) end
 ---@param horse integer
 ---@param avoidanceLevel integer
 function SetHorseAvoidanceLevel(horse, avoidanceLevel) end
+
+---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB8AB265426CFE6DD)  
+---Sets an internal horse-component flag (bit 0x04) used for scripted control of mounts (e.g., after placing/rider-seating). Pass true to set, false to clear. No effect on non-horses.
+---@param ped integer
+---@param toggle boolean
+function SetHorseScriptedFlag(ped, toggle) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC32779C16FCEECD9)  
@@ -7346,6 +7340,14 @@ function SetPedMaxTimeInWater(ped, value) end
 function SetPedMaxTimeUnderwater(ped, value) end
 
 ---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6DB875AFC584FA32)  
+---If the ped has an active TASK_MELEE, force-keep it active for durationMs starting now; returns true on success (no effect if melee task not running).
+---@param ped integer
+---@param durationMs integer
+---@return boolean
+function SetPedMeleeForcedDuration(ped, durationMs) end
+
+---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x01A898D26E2333DD)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -7964,6 +7966,14 @@ function SetRandomOutfitVariation(ped, p1) end
 function SetRelationshipBetweenGroups(relationship, group1, group2) end
 
 ---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xDC91F22F09BC6C2F)  
+---Registers/unregisters a relationship group as a script resource (type 0x24).
+---Pass false to register, true to unregister.
+---@param group integer | string
+---@param unregister boolean
+function SetRelationshipGroupScriptRegistered(group, unregister) end
+
+---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x39A2FC5AF55A52B1)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -8011,6 +8021,18 @@ function SetScenarioPedDensityThisFrame(configHash) end
 ---This native does not have an official description.
 ---@param multiplier number
 function SetScenarioPedRangeMultiplierThisFrame(multiplier) end
+
+---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9E3842E5DAD69F80)  
+---Registers the given volume with ped/scenario systems (stores a global ref). Used by SP scripts to keep a volume alive; calling again replaces the previous ref.
+---@param volume integer
+function SetScenarioPedVolumeReference(volume) end
+
+---**`PED` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x028E7B3BBA0BD2FC)  
+---Sets ScriptData bit 0x8000 on the ped (one-way). Used by scripts to mark a staged/special ped (e.g., scripted corpse) affecting cleanup/interaction.
+---@param ped integer
+function SetStagedPedFlag(ped) end
 
 ---**`PED` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xEF5A3D2285D8924B)  

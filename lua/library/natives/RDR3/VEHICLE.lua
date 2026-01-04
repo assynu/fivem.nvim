@@ -270,6 +270,53 @@ function FadeAndDestroyVehicle() end
 function ForcePlaybackRecordedVehicleUpdate(vehicle, p1) end
 
 ---**`VEHICLE` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0E558D3A49D759D6)  
+---Collects all passenger peds (excluding the driver) from the specified wagon-type vehicle (train wagon) and appends them to itemSet as indexed items. Returns the number of passengers added (0 if none / invalid / non-wagon).
+---
+---Notes:
+---	- Only works on wagon entities (train wagons). Regular vehicles/coaches typically return 0.
+---	- Clear the itemset before calling.
+---	- If you also need the driver, query GET_DRIVER_OF_VEHICLE(wagon) and handle/add it separately (see scripts).
+---	- Resolve returned entries via indexed item helpers:
+---		Ped p = MISC::_GET_PED_FROM_INDEXED_ITEM(ITEMSET::GET_INDEXED_ITEM_IN_ITEMSET(i, itemSet));
+---		(or: Entity e = MISC::_GET_ENTITY_FROM_ITEM(...); then ENTITY::GET_PED_INDEX_FROM_ENTITY_INDEX(e)).
+---	- Wagon auto-population can be toggled via ENTITY::_0x119A5714578F4E05(wagon, bool); scripts disable it in some flows.
+---
+---Example image: https://imgur.com/a/2V8Uk2K
+---
+---Example (C++):
+---	ItemSet set = ITEMSET::CREATE_ITEMSET(true);
+---	ITEMSET::_CLEAR_ITEMSET(set);
+---	int count = VEHICLE::_GET_ALL_WAGON_PASSENGERS(wagon, set);
+---	for (int i = 0; i < count; ++i) {
+---		Ped p = MISC::_GET_PED_FROM_INDEXED_ITEM(ITEMSET::GET_INDEXED_ITEM_IN_ITEMSET(i, set));
+---		if (ENTITY::DOES_ENTITY_EXIST(p) && !ENTITY::IS_ENTITY_DEAD(p)) {
+---			// ...
+---		}
+---	}
+---	ITEMSET::DESTROY_ITEMSET(set);
+---@param wagon integer
+---@param itemSet integer
+---@return integer
+function GetAllWagonPassengers(wagon, itemSet) end
+
+---**`VEHICLE` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0BA4250D20007C2E)  
+---Returns the balloon OBJECT entity attached to a hot air balloon vehicle.
+---
+---Returns 0 if:
+---	- vehicle is not a hot air balloon type, or
+---	- the balloon object is not present.
+---
+---Notes:
+---	- Returned handle is typically an OBJECT (not a ped/vehicle).
+---	- Always validate with ENTITY::DOES_ENTITY_EXIST before use.
+---	- Example image: https://imgur.com/a/YWDUJ56
+---@param vehicle integer
+---@return integer
+function GetBalloonObjectFromVehicle(vehicle) end
+
+---**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x58F2244C1286D09A)  
 ---This native does not have an official description.
 ---@param vehicle integer
@@ -467,6 +514,17 @@ function GetRotationOfVehicleRecordingAtTime(recording, time, script) end
 function GetRowingOars(vehicle) end
 
 ---**`VEHICLE` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9CC94A948EAF5372)  
+---Returns the station hash for a given train track and station index.
+---Notes:
+---- trackIndex is typically 0..24 and stationIndex 0..7.
+---- Returns 0 if the pair is invalid/out of range.
+---@param trackIndex integer
+---@param stationIndex integer
+---@return integer
+function GetStationAtIndex(trackIndex, stationIndex) end
+
+---**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xBA958F68031DDBFC)  
 ---Returns Coords of vStation
 ---p0 - NET_TRAIN_MANAGER_GET_TRAIN_STATION_DATA
@@ -482,6 +540,13 @@ function GetStationCoordsFromTrainStationData(trackIndex, stationIndex) end
 ---@param vehicle integer
 ---@return number
 function GetTimePositionInRecording(vehicle) end
+
+---**`VEHICLE` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x13C190302369308B)  
+---Requires a visibility tracker on the vehicle (TRACK_VEHICLE_VISIBILITY)
+---@param vehicle integer
+---@return integer
+function GetTrackAmountOfVisiblePixels(vehicle) end
 
 ---**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x85D39F5E3B6D7EB0)  
@@ -1025,20 +1090,6 @@ function N_0x06a09a6e0c6d2a84(train, p1) end
 function N_0x0794199b25e499e1(wagon, p1) end
 
 ---**`VEHICLE` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x07E2E21E799080A0)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
-function N_0x07e2e21e799080a0(p0, p1) end
-
----**`VEHICLE` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0BA4250D20007C2E)  
----This native does not have an official description.
----@param p0 any
----@return any
-function N_0x0ba4250d20007c2e(p0) end
-
----**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0CD7914D17A970AB)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -1050,14 +1101,6 @@ function N_0x0cd7914d17a970ab(p0, p1) end
 ---This native does not have an official description.
 ---@param trackIndex integer
 function N_0x0d5fdf0d36fa10cd(trackIndex) end
-
----**`VEHICLE` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0E558D3A49D759D6)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@return any
-function N_0x0e558d3a49d759d6(p0, p1) end
 
 ---**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0F7F603BDE08C4D3)  
@@ -1096,13 +1139,6 @@ function N_0x1180a2974d251b7b(train) end
 ---@param y number
 ---@param z number
 function N_0x12f6c6ed3eff42de(vehicle, x, y, z) end
-
----**`VEHICLE` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x13C190302369308B)  
----This native does not have an official description.
----@param p0 any
----@return any
-function N_0x13c190302369308b(p0) end
 
 ---**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x13EB275BF81636D1)  
@@ -1558,14 +1594,6 @@ function N_0x9868c0d0134855f7(p0) end
 function N_0x98a7598c579ee871(p0, p1, p2) end
 
 ---**`VEHICLE` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9CC94A948EAF5372)  
----_GET_P - _GET_T*
----@param trackIndex integer
----@param stationIndex integer
----@return integer
-function N_0x9cc94a948eaf5372(trackIndex, stationIndex) end
-
----**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9D12796EF4BF9EA9)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -1641,18 +1669,6 @@ function N_0xb42c87521d1bdd2f(vehicle, x, y, z) end
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB961DD799A837BD7)  
 ---This native does not have an official description.
 function N_0xb961dd799a837bd7() end
-
----**`VEHICLE` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC2E62678D602853C)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@param p2 any
----@param p3 any
----@param p4 any
----@param p5 any
----@param p6 any
-function N_0xc2e62678d602853c(p0, p1, p2, p3, p4, p5, p6) end
 
 ---**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC325A6BAA62CF8A2)  
@@ -2338,6 +2354,13 @@ function SetRandomVehicleDensityMultiplierThisFrame(multiplier) end
 function SetTrainCruiseSpeed(train, speed) end
 
 ---**`VEHICLE` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x07E2E21E799080A0)  
+---Trains only. Enables/disables damage/explosion flags on the engine and all attached cars; typically set true before EXPLODE_VEHICLE.
+---@param train integer
+---@param enabled boolean
+function SetTrainDestructionEnabled(train, enabled) end
+
+---**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3660BCAB3A6BB734)  
 ---This native does not have an official description.
 ---@param train integer
@@ -2851,6 +2874,18 @@ function SetVehicleProvidesCover(vehicle, toggle) end
 ---@param vehicle integer
 ---@param p1 boolean
 function SetVehicleRespectsLocksWhenHasDriver(vehicle, p1) end
+
+---**`VEHICLE` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC2E62678D602853C)  
+---Picks the road/path link nearest (start to end) and stores it on the vehicle's driving component (used by R* Scripts to choose an exit link).
+---@param vehicle integer
+---@param startX number
+---@param startY number
+---@param startZ number
+---@param endX number
+---@param endY number
+---@param endZ number
+function SetVehicleRoadLinkForced(vehicle, startX, startY, startZ, endX, endY, endZ) end
 
 ---**`VEHICLE` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB79BE78C665B3E6D)  

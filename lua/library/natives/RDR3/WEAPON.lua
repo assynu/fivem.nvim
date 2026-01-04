@@ -39,6 +39,34 @@ function AddAmmoToPed(ped, weaponHash, amount, addReason) end
 function AddAmmoToPedByType(ped, ammoType, amount, addReason) end
 
 ---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x14FF0C2545527F9B)  
+---Visually attaches the specified weapon to a horse holster/rack (shows the weapon model on the horse), even when the caller is not near the horse.
+---
+---Typical flow:
+---	1) Move/assign the weapon into the horse inventory context first (commonly via 0xE9BD19F8121ADE3E).
+---	2) Call this native to force the visible attachment on the horse.
+---
+---Notes:
+---- This is about the *visible* holster/rack state; it is often paired with 0xE9BD19F8121ADE3E because that makes the weapon available in inventory terms, while this makes it appear on the horse.
+---- Validate `horse` and `ownerPed` exist and are alive/valid before calling.
+---
+---Related:
+---- 0xE9BD19F8121ADE3E (commonly used before this)
+---- 0xD4C6E24D955FF061 (_DELETE_WEAPON_OBJECTS_ON_HORSE)
+---@param horse integer
+---@param weaponHash integer | string
+---@param ownerPed integer
+function AttachWeaponToHorseHolster(horse, weaponHash, ownerPed) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x23BF601A42F329A0)  
+---True if the ped can access their *owned* mount/horse inventory for saddle weapon stow/retrieve (used to gate longarm-slot selection in the weapon wheel).
+---Notes: does not require holding a weapon; returns false if too far, wrong/non-owned mount, or the saddle interaction state is not allowed.
+---@param ped integer
+---@return boolean
+function CanPedAccessMountWeapons(ped) end
+
+---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x087D8F4BC65F68E4)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -56,6 +84,35 @@ function ClearPedLastWeaponDamage(ped) end
 ---@param scale number
 ---@return integer
 function CreateWeaponObject(weaponHash, ammoCount, x, y, z, showWorldModel, scale) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD4C6E24D955FF061)  
+---Deletes all visible weapon PROP objects attached to a horse's holsters/rack.
+---This removes only the *rendered/attached objects*; it does not remove the weapons from inventory and they remain usable.
+---
+---Parameters:
+---- horse: Horse ped whose attached weapon objects should be removed.
+---
+---Notes:
+---- Useful to clear the horse's visible long-gun/holster props after manually attaching via 0x14FF0C2545527F9B.
+---- Always validate the ped handle before calling.
+---
+---Example video:
+---- https://imgur.com/a/BavwEfE
+---@param horse integer
+function DeleteWeaponObjectsOnHorse(horse) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD63B4BA3A02A99E0)  
+---Disables all special ammo variants for the given weapon on the specified ped, forcing regular/basic ammo only.
+---
+---Notes:
+---	- Higher-level override vs. per-ammo-type disables (targets all special variants at once).
+---	- Useful to enforce "no special ammo" rules for a specific ped/weapon.
+---	- Per-ped/per-weapon setting.
+---@param ped integer
+---@param weaponHash integer | string
+function DisableAllSpecialAmmoForPed(ped, weaponHash) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xAA5A52204E077883)  
@@ -121,6 +178,18 @@ function DoesPedHaveShotgun(ped, p1) end
 function DoesPedHaveSniper(ped, p1) end
 
 ---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x404514D231DB27A0)  
+---Re-enables all special ammo variants for the given weapon on the specified ped (inverse of _DISABLE_ALL_SPECIAL_AMMO_FOR_PED).
+---
+---Notes:
+---	- Restores access to any supported special ammo types for that weapon (e.g. express, high velocity, split point, explosive, etc.).
+---	- Useful to toggle back from a "regular ammo only" restriction.
+---	- Per-ped/per-weapon setting.
+---@param ped integer
+---@param weaponHash integer | string
+function EnableAllSpecialAmmoForPed(ped, weaponHash) end
+
+---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3B7B7908B7ADFB4B)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -141,6 +210,20 @@ function EnableAmmoTypeForPedWeapon(ped, weaponHash, ammoHash) end
 ---@param ped integer
 ---@return boolean
 function EnableWeaponRestore(ped) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x44C8F4908F1B2622)  
+---Triggers detonation/effect for a specific throwable ammo type associated with the given ped (commonly used to remotely detonate placed dynamite).
+---Known ammo hashes seen in scripts:
+---- AMMO_DYNAMITE
+---- AMMO_MOLOTOV
+---- AMMO_POISONBOTTLE
+---Notes:
+---- Only affects throwables of that ammo type that are attributable to the ped (i.e., their placed/owned instances).
+---@param ped integer
+---@param ammoHash integer | string
+---@return boolean
+function ExplodePedAmmoType(ped, ammoHash) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x918990BD9CE08582)  
@@ -234,6 +317,17 @@ function GetBestPedWeaponInGroup(ped, weaponGroup, p2, p3) end
 function GetBestPedWeaponInInventory(ped, p1) end
 
 ---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xBC9444F2FF94A9C0)  
+---Returns whether the ped is currently allowed to switch weapons (weapon switching not locked by internal code/state).
+---
+---Script evidence: used as an additional gate in NPLOI__CAN_GUN_SPIN_PREVIEW; when it returns false scripts log "Prevented by Code" even if twirl-capable weapons exist in hand/holsters.
+---
+---Example video: https://imgur.com/a/hawFMhN
+---@param ped integer
+---@return boolean
+function GetCanSwitchWeapon(ped) end
+
+---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x6554ECCE226F2A2A)  
 ---This native does not have an official description.
 ---@param weaponHash integer | string
@@ -312,11 +406,33 @@ function GetDefaultUnarmedWeaponHash(ped) end
 function GetDefaultWeaponAttachPoint(weaponHash) end
 
 ---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0DE0944ECCB3DF5D)  
+---True if the ped is currently being damaged by poison gas/fog (used by scripts to block actions like crafting). May be false if damage is suppressed/immune even while inside the fog.
+---@param ped integer
+---@return boolean
+function GetIsPedTakingPoisonGasDamage(ped) end
+
+---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x3799EFCC3C8CD5E1)  
----This native does not have an official description.
+---Returns the current weapon's lock-on/aim-assist range for this ped.
+---Internally selects a different range when the ped is mounted or in a vehicle vs on foot. Returns -1.0 if the ped/weapon data is unavailable.
+---Commonly used to derive a clamp for PLAYER::SET_PLAYER_LOCKON_RANGE_OVERRIDE (e.g., add a margin or cap to 18.0).
 ---@param ped integer
 ---@return number
-function GetLockonRange(ped) end
+function GetLockonRangeCurrentWeapon(ped) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5A695BD328586B44)  
+---Gets the ped setting that controls whether longarms are instantly stored on the mount when dismounting.
+---
+---Notes:
+---- p1 selects one of two internal bits (WeaponComponent+0x1B5); scripts consistently pass 0.
+---- SP scripts typically toggle this based on context (e.g., player on/near their saddle horse or horse has a holstered longarm, and the player is in a "safe/town" state and not under threat).
+---- Reads the same setting toggled by WEAPON::_SET_INSTANTLY_STORE_LONGARMS_ON_DISMOUNT (0xB832F1A686B9B810).
+---@param ped integer
+---@param p1 integer
+---@return boolean
+function GetLongarmsInstantlyStoreOnDismount(ped, p1) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xDC16122C7A20C933)  
@@ -452,6 +568,50 @@ function GetPedWorstWeapon(ped, p1, p2, p3) end
 function GetPlayerPedQuickSwapWeaponByGuid(ped) end
 
 ---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C8000FDD1BB111)  
+---Finds an ignited (lit/fused) explosive projectile inside a Volume.
+---
+---Parameters:
+---- volume: Search volume.
+---- outEntity: [out] Receives the projectile Entity handle.
+---
+---Returns:
+---- BOOL: true if an ignited projectile was found (outEntity set), false otherwise.
+---
+---Notes:
+---- Intended for explosives with a fuse/ignition state (e.g., lit dynamite).
+---- If multiple ignited projectiles are present, returns the first match.
+---- Requires a valid Volume; delete it when done.
+---- Lua example: https://pastebin.com/N9p4anLU 
+---
+---_GET_PO*
+---@param volume integer
+---@return boolean, integer
+function GetProjectileIgnitedInVolume(volume) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C8000FDD1BB222)  
+---Finds a projectile entity inside the given Volume and writes its handle to the out pointer.
+---
+---Parameters:
+---- volume: Volume to search in.
+---- outEntity: [out] Receives the found projectile entity handle.
+---
+---Returns:
+---- BOOL: true if a projectile was found and written; false otherwise.
+---
+---Notes:
+---- Returns the first matching projectile the engine reports for that volume (order is unspecified).
+---- Not limited to ignited projectiles (see 0x74C8000FDD1BB111 for the ignited-only variant).
+---- The returned entity is typically an OBJECT; validate with ENTITY::DOES_ENTITY_EXIST.
+---- Lua example: https://pastebin.com/ZgaUSEEP 
+---
+---_GET_PO*
+---@param volume integer
+---@return boolean, integer
+function GetProjectileInVolume(volume) end
+
+---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xCAD4FE9398820D24)  
 ---Returns WeaponAttachPoint
 ---@param ped integer
@@ -520,6 +680,13 @@ function GetWeaponEmoteVariation(ped, variation) end
 function GetWeaponFromDefaultPedWeaponCollection(weaponCollection, weaponGroup) end
 
 ---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xAFFD0CCF31F469B8)  
+---Returns the weapon hash in the horse/mount's first holster slot, or 0 if empty/invalid.
+---@param horse integer
+---@return integer
+function GetWeaponFromHorseHolster(horse) end
+
+---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xF4601C1203B1A78D)  
 ---Returns iSpinHash
 ---@param emote integer | string
@@ -570,6 +737,15 @@ function GetWeaponObjectFromPed(ped, p1) end
 ---@param weaponObject integer
 ---@return number
 function GetWeaponPermanentDegradation(weaponObject) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9F0E1892C7F228A8)  
+---Returns the last weapon hash that was replaced due to a slot/holster swap when giving/equipping a weapon (set internally during weapon give/equip when another weapon gets displaced).
+---If clear==true, the stored value is reset to 0 after reading (consume semantics); if clear==false, it is not cleared.
+---Returns 0 if no replacement is pending.
+---@param clear boolean
+---@return integer
+function GetWeaponReplacedHash(clear) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x22084CA699219624)  
@@ -819,6 +995,24 @@ function IsPedArmed(ped, flags) end
 function IsPedCarryingWeapon(ped, weaponHash) end
 
 ---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD2209866B0CB72EA)  
+---Checks whether the weapon stored/equipped at the specified ped attach point is classified as a sniper weapon.
+---
+---Params:
+---- ped: Target ped.
+---- attachPoint: Attach point / weapon slot to check.
+---
+---Returns:
+---- BOOL: True if that slot contains a sniper-class weapon.
+---
+---Video:
+---- https://imgur.com/a/sRwan6L
+---@param ped integer
+---@param attachPoint integer
+---@return boolean
+function IsPedCarryingWeaponSniperAtAttachPoint(ped, attachPoint) end
+
+---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xBDD9C235D8D1052E)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -1045,22 +1239,6 @@ function N_0x000fa7a4a8443af7(p0) end
 function N_0x07e1c35f0078c3f9(ped, weapon) end
 
 ---**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x0DE0944ECCB3DF5D)  
----_GET_D* - _GET_L*
----@param ped integer
----@return boolean
-function N_0x0de0944eccb3df5d(ped) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x14FF0C2545527F9B)  
----Puts the gun visibly in your horse's holster without having to be close to the horse. Use 0xE9BD19F8121ADE3E before using this native
----_A* or _B*
----@param horse integer
----@param weaponHash integer | string
----@param ped integer
-function N_0x14ff0c2545527f9b(horse, weaponHash, ped) end
-
----**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x16D9841A85FA627E)  
 ---This native does not have an official description.
 ---@param ped integer
@@ -1075,40 +1253,11 @@ function N_0x16d9841a85fa627e(ped, toggle) end
 function N_0x183ce355115b6e75(p0, p1) end
 
 ---**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x23BF601A42F329A0)  
----This native does not have an official description.
----@param p0 any
----@return any
-function N_0x23bf601a42f329a0(p0) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x2EBF70E1D8C06683)  
----_SET_A* - _SET_B*
----@param ped integer
----@param p1 integer | string
-function N_0x2ebf70e1d8c06683(ped, p1) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x404514D231DB27A0)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
-function N_0x404514d231db27a0(p0, p1) end
-
----**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x431240A58484D5D0)  
 ---This native does not have an official description.
 ---@param ped integer
 ---@param toggle boolean
 function N_0x431240a58484d5d0(ped, toggle) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x44C8F4908F1B2622)  
----This native does not have an official description.
----@param ped integer
----@param ammoHash integer | string
----@return boolean
-function N_0x44c8f4908f1b2622(ped, ammoHash) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x457B16951AD77C1B)  
@@ -1132,16 +1281,6 @@ function N_0x45e57fdd531c9477(ped, toggle) end
 function N_0x486c96a0dcd2bc92(p0, p1) end
 
 ---**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5A695BD328586B44)  
----Returns true if ped is on a horse while inside of a town
----Params: p1 = 0
----GET_L* - GET_MA*
----@param ped integer
----@param p1 integer
----@return boolean
-function N_0x5a695bd328586b44(ped, p1) end
-
----**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x63B83A526329AFBC)  
 ---Only used in R* Script fme_escaped_convicts, p0 = 0
 ---@param p0 any
@@ -1162,51 +1301,6 @@ function N_0x641351e9ad103890(p0, p1) end
 function N_0x74c2365fdd1bb48f(p0, p1) end
 
 ---**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C8000FDD1BB111)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@return any
-function N_0x74c8000fdd1bb111(p0, p1) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C8000FDD1BB222)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@return any
-function N_0x74c8000fdd1bb222(p0, p1) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C9080FDD1BB48E)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
-function N_0x74c9080fdd1bb48e(p0, p1) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C9080FDD1BB48F)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
-function N_0x74c9080fdd1bb48f(p0, p1) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C90AAACC1DD48F)  
----This native does not have an official description.
----@param p0 any
-function N_0x74c90aaacc1dd48f(p0) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x8A779706DA5CA3DD)  
----Only used in R* SP Scripts native_son2, native_son3 and smuggler2
----Params: p2 = -1
----@param ped integer
----@param p1 boolean
----@param p2 integer
-function N_0x8a779706da5ca3dd(ped, p1, p2) end
-
----**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9409C62504A8F9E9)  
 ---Only used in R* SP Script guama3
 ---@param vehicle integer
@@ -1221,13 +1315,6 @@ function N_0x9409c62504a8f9e9(vehicle, p1) end
 ---@param p2 any
 ---@return any
 function N_0x9cca3131e6b53c68(p0, p1, p2) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x9F0E1892C7F228A8)  
----This native does not have an official description.
----@param p0 boolean
----@return any
-function N_0x9f0e1892c7f228a8(p0) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xA2091482ED42EF85)  
@@ -1254,13 +1341,6 @@ function N_0xa3716a77dcf17424(p0, p1, p2) end
 function N_0xa769d753922b031b(p0, p1, p2) end
 
 ---**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xAFFD0CCF31F469B8)  
----This native does not have an official description.
----@param p0 any
----@return any
-function N_0xaffd0ccf31f469b8(p0) end
-
----**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB0FB9B196A3D13F0)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -1269,31 +1349,10 @@ function N_0xaffd0ccf31f469b8(p0) end
 function N_0xb0fb9b196a3d13f0(p0, p1, p2) end
 
 ---**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xBC9444F2FF94A9C0)  
----This native does not have an official description.
----@param p0 any
----@return any
-function N_0xbc9444f2ff94a9c0(p0) end
-
----**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC5899C4CD2E2495D)  
 ---This native does not have an official description.
 ---@param p0 any
 function N_0xc5899c4cd2e2495d(p0) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD2209866B0CB72EA)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
----@return any
-function N_0xd2209866b0cb72ea(p0, p1) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD4C6E24D955FF061)  
----This native does not have an official description.
----@param p0 any
-function N_0xd4c6e24d955ff061(p0) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD53846B9C931C181)  
@@ -1302,13 +1361,6 @@ function N_0xd4c6e24d955ff061(p0) end
 ---@param p1 any
 ---@param p2 any
 function N_0xd53846b9c931c181(p0, p1, p2) end
-
----**`WEAPON` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xD63B4BA3A02A99E0)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
-function N_0xd63b4ba3a02a99e0(p0, p1) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xE9B3FEC825668291)  
@@ -1371,6 +1423,18 @@ function RefillAmmoInClip(ped, p2) end
 ---@param ped integer
 ---@return any
 function RefillAmmoInCurrentPedWeapon(ped) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C90AAACC1DD48F)  
+---Registers a spawned weapon object as ignitable (enables fuse/lighting behavior).
+---
+---Parameters:
+---- weaponObject: Weapon OBJECT entity (e.g., from CREATE_WEAPON_OBJECT).
+---
+---Notes:
+---- Does not ignite instantly; it only enables ignition/fuse handling on the object.
+---@param weaponObject integer
+function RegisterWeaponObjectForIgnition(weaponObject) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x1B83C0DEEBCBB214)  
@@ -1542,6 +1606,15 @@ function SetAmmoTypeForPedWeapon(ped, weaponHash, ammoHash) end
 ---@param ammoHash integer | string
 ---@return any
 function SetAmmoTypeForPedWeaponInventory(ped, ammoHash) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x2EBF70E1D8C06683)  
+---Sets the arrow trail FX preset for arrows fired from a bow by this ped (applies to arrows fired after the call).
+---trailHash: 658521773 is used by R* to enable a sparkly trail in some MP modes and to restore default via -1199552854.
+---Visual-only; does not change ammo/damage.
+---@param ped integer
+---@param trailHash integer | string
+function SetArrowTrailFx(ped, trailHash) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x75C55983C2C39DAA)  
@@ -1737,6 +1810,33 @@ function SetPedWeaponAttachPointVisibility(ped, attachPoint, visible) end
 function SetPlayerPedQuickSwapWeaponByGuid(ped) end
 
 ---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C9080FDD1BB48F)  
+---Sets the explosion/impact effect radius for an existing projectile entity (e.g., thrown dynamite).
+---
+---Notes:
+---- Set before detonation/impact; no effect after.
+---- Does not ignite/detonate; it only changes the projectile's later effect.
+---- Typical R* flow: find projectile handle (e.g. GET_PROJECTILE_OF_PROJECTILE_TYPE_WITHIN_DISTANCE or _GET_PROJECTILE_IGNITED_IN_VOLUME) then apply a radius (e.g. 2.0f).
+---- R* also sets very small values (e.g. 0.01f) when an ignited projectile is detected in a volume, likely to minimize the resulting blast/effect while keeping the same projectile.
+---@param projectile integer
+---@param radius number
+function SetProjectileEffectRadius(projectile, radius) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x74C9080FDD1BB48E)  
+---Sets the remaining fuse time (seconds) for an ignited explosive projectile.
+---
+---Parameters:
+---- projectile: Projectile entity (e.g., lit dynamite).
+---- time: Remaining fuse time in seconds (0.0 = immediate detonation).
+---
+---Notes:
+---- Typically only applies after the projectile has been ignited.
+---@param projectile integer
+---@param time number
+function SetProjectileFuseTime(projectile, time) end
+
+---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x194D877FC5597B7D)  
 ---This native does not have an official description.
 ---@param vehicle integer
@@ -1763,6 +1863,23 @@ function SetVehicleWeaponHeadingLimits(vehicle, p1, minHeading, maxHeading) end
 ---@param maxHeading number
 ---@return any
 function SetVehicleWeaponHeadingLimits_2(vehicle, p1, minHeading, maxHeading) end
+
+---**`WEAPON` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x8A779706DA5CA3DD)  
+---Toggles reload behavior for certain vehicle-mounted cannons.
+---
+---Params:
+---- vehicle: Vehicle with the mounted cannon.
+---- noReload: true = disable reload (continuous fire), false = normal reload.
+---- p2: unk, always -1 in R* scripts.
+---
+---Notes:
+---- Observed only in SP scripts (native_son2, native_son3, smuggler2).
+---- Observed to apply to cannon vehicles (e.g., breach_cannon, hotchkiss_cannon), not general vehicle weapons/turrets.
+---@param vehicle integer
+---@param noReload boolean
+---@param p2 integer
+function SetVehicleWeaponReloadMode(vehicle, noReload, p2) end
 
 ---**`WEAPON` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xE22060121602493B)  

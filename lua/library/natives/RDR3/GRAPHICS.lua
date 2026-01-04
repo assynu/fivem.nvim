@@ -1224,13 +1224,6 @@ function N_0xd543487a1f12828f(p0, p1, p2, p3) end
 function N_0xd9bc98b55bcfaa9b(p0) end
 
 ---**`GRAPHICS` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xDFE332A5DA6FE7C9)  
----Returns iNumPixels, iPixelsVisible
----@param iTrackedPoint integer
----@return integer
-function N_0xdfe332a5da6fe7c9(iTrackedPoint) end
-
----**`GRAPHICS` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xE63D68F455CA0B47)  
 ---This native does not have an official description.
 ---@param p0 any
@@ -1320,6 +1313,13 @@ function N_0xff584f097c17fa8f() end
 ---This native does not have an official description.
 ---@param p0 any
 function N_0xff8018c778349234(p0) end
+
+---**`GRAPHICS` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xDFE332A5DA6FE7C9)  
+---Returns iNumPixels, iPixelsVisible
+---@param iTrackedPoint integer
+---@return integer
+function NumPixelsVisibleAtTrackedPoint(iTrackedPoint) end
 
 ---**`GRAPHICS` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xC2B8164C3BE871A4)  

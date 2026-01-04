@@ -285,6 +285,27 @@ function FindEntityLootingPed(entity) end
 function ForceEntityAiAndAnimationUpdate(entity, p1) end
 
 ---**`ENTITY` `client`**  
+---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x119A5714578F4E05)  
+---Enable/disable automatic ambient passenger population on a train wagon (carriage).
+---	- toggle=true: wagon is kept populated; removed/deleted passengers are replaced quickly.
+---	- toggle=false: stop auto-filling; after removing passengers, no new peds spawn until re-enabled.
+---
+---Notes:
+---	- Intended for train carriage entities (wagons) obtained from a train (e.g., VEHICLE::GET_TRAIN_CARRIAGE).
+---	- Often used with passenger collection via VEHICLE::_GET_ALL_WAGON_PASSENGERS.
+---
+---Example (from scripts):
+---	for (int i = 0; i < VEHICLE::_GET_NUM_CARS_FROM_TRAIN_CONFIG(trainConfig); ++i) {
+---		Vehicle wagon = VEHICLE::GET_TRAIN_CARRIAGE(train, i);
+---		if (ENTITY::DOES_ENTITY_EXIST(wagon) && !ENTITY::IS_ENTITY_DEAD(wagon)) {
+---			ENTITY::_FORCE_TRAIN_WAGON_POPULATION(wagon, true);
+---		}
+---	}
+---@param trainWagon integer
+---@param toggle boolean
+function ForceTrainWagonPopulation(trainWagon, toggle) end
+
+---**`ENTITY` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x7D9EFB7AD6B19754)  
 ---This native does not have an official description.
 ---@param entity integer
@@ -1244,13 +1265,6 @@ function N_0x0db41d59e0f1502b(p0) end
 ---This native does not have an official description.
 ---@param p0 any
 function N_0x0fd7d7c232876e72(p0) end
-
----**`ENTITY` `client`**  
----[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x119A5714578F4E05)  
----This native does not have an official description.
----@param p0 any
----@param p1 any
-function N_0x119a5714578f4e05(p0, p1) end
 
 ---**`ENTITY` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x120376C23F019C6C)  

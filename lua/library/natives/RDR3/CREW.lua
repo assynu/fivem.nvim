@@ -102,7 +102,7 @@ function NetworkGetPrimaryClanDataNew() end
 ---**`CREW` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0xB5074DB804E28CE7)  
 ---This native does not have an official description.
----@return any
+---@return boolean
 function NetworkGetPrimaryClanDataPending() end
 
 ---**`CREW` `client`**  
@@ -115,6 +115,6 @@ function NetworkGetPrimaryClanDataStart(p1) end
 ---**`CREW` `client`**  
 ---[Native Documentation](https://alloc8or.re/rdr3/nativedb/?n=0x5B4F04F19376A0BA)  
 ---This native does not have an official description.
----@return any
+---@return boolean
 function NetworkGetPrimaryClanDataSuccess() end
 
