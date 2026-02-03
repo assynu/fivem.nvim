@@ -14,6 +14,26 @@ false errors. This allows you to write modern, clean code without editor noise, 
 
 ### Installation
 
+Using [default package manager](https://neovim.io/doc/user/pack.html) (Requires Neovim 0.12)
+```lua
+-- Somewhere before it there should be
+-- vim.pack.add("https://github.com/neovim/nvim-lspconfig")
+vim.pack.add("https://github.com/assynu/fivem.nvim.git")
+
+require("fivem-nvim").setup({})
+
+-- Or with custom parameters
+
+require("fivem-nvim").setup({
+	globals = {
+		"lib",
+		"cache",
+		"Core",
+		"MySQL",
+	},
+})
+```
+
 Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
@@ -23,8 +43,6 @@ return {
     dependencies = {
         "neovim/nvim-lspconfig",
     },
-    event = "BufReadPre *.lua",
-
     config = function(_, opts)
         require("fivem-nvim").setup(opts)
     end,
@@ -41,7 +59,6 @@ return {
     dependencies = {
         "neovim/nvim-lspconfig",
     },
-    event = "BufReadPre *.lua",
     opts = {
         globals = {
             "lib",
