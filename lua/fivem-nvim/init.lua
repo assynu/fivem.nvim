@@ -60,6 +60,15 @@ function M.setup(opts)
 					pathStrict = true,
 					plugin = plugin_root .. "/lua/lls-plugin/fivem.lua",
 				},
+				format = {
+				    enable = true,
+				    defaultConfig = {
+				        indent_style = "tab",
+				        indent_size = "4",
+				        continuation_indent_size = "4",
+				        column_width = "200",
+				    },
+				},
 				diagnostics = {
 					globals = default_globals,
 				},
