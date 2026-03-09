@@ -66,7 +66,7 @@ function M.setup(opts)
 				        indent_style = "tab",
 				        indent_size = "4",
 				        continuation_indent_size = "4",
-				        column_width = "200",
+				        column_width = "9999",
 				    },
 				},
 				diagnostics = {
