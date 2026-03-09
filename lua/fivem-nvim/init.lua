@@ -61,14 +61,7 @@ function M.setup(opts)
 					plugin = plugin_root .. "/lua/lls-plugin/fivem.lua",
 				},
 				format = {
-					enable = true,
-					defaultConfig = {
-						column_width = "9999",
-						call_arg_parentheses = "keep",
-						align_call_args = "false",
-						break_all_list_when_line_exceeds_column_limit = "false",
-						auto_collapse_lines = "false",
-					},
+					enable = false,
 				},
 				diagnostics = {
 					globals = default_globals,
