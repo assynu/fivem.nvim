@@ -61,13 +61,14 @@ function M.setup(opts)
 					plugin = plugin_root .. "/lua/lls-plugin/fivem.lua",
 				},
 				format = {
-				    enable = true,
-				    defaultConfig = {
-				        indent_style = "tab",
-				        indent_size = "4",
-				        continuation_indent_size = "4",
-				        column_width = "9999",
-				    },
+					enable = true,
+					defaultConfig = {
+						column_width = "9999",
+						call_arg_parentheses = "keep",
+						align_call_args = "false",
+						break_all_list_when_line_exceeds_column_limit = "false",
+						auto_collapse_lines = "false",
+					},
 				},
 				diagnostics = {
 					globals = default_globals,
