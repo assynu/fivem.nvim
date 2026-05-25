@@ -8,18 +8,13 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     permissions:
-          contents: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4.0.0
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: 9
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
+          bun-version: latest
 
       - name: Generate natives
         run: |
@@ -27,8 +22,8 @@ jobs:
           unzip repo.zip
           mv rage-lua-natives-main rage-lua-natives
           cd rage-lua-natives
-          pnpm i --frozen-lockfile
-          pnpm start
+          bun install --frozen-lockfile
+          bun run start
           cd ..
           mkdir -p lua/library/natives
           rm -rf lua/library/natives/*
