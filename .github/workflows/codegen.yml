@@ -23,16 +23,17 @@ jobs:
 
       - name: Generate natives
         run: |
-          wget https://github.com/thelindat/rage-lua-natives/archive/master.zip -O repo.zip
+          wget https://github.com/overextended/rage-lua-natives/archive/main.zip -O repo.zip
           unzip repo.zip
-          cd rage-lua-natives-master
+          mv rage-lua-natives-main rage-lua-natives
+          cd rage-lua-natives
           pnpm i --frozen-lockfile
           pnpm start
           cd ..
           mkdir -p lua/library/natives
           rm -rf lua/library/natives/*
-          mv -f rage-lua-natives-master/build/cfx/{CFX-NATIVE,GTAV,RDR3} lua/library/natives/
-          rm -rf rage-lua-natives-master
+          mv -f rage-lua-natives/build/cfx/{CFX-NATIVE,GTAV,RDR3} lua/library/natives/
+          rm -rf rage-lua-natives
           rm repo.zip
 
       - name: Update repository
