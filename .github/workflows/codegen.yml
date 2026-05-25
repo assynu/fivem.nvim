@@ -8,31 +8,27 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     permissions:
-          contents: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4.0.0
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: 9
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
+          bun-version: latest
 
       - name: Generate natives
         run: |
-          wget https://github.com/thelindat/rage-lua-natives/archive/master.zip -O repo.zip
+          wget https://github.com/overextended/rage-lua-natives/archive/main.zip -O repo.zip
           unzip repo.zip
-          cd rage-lua-natives-master
-          pnpm i --frozen-lockfile
-          pnpm start
+          mv rage-lua-natives-main rage-lua-natives
+          cd rage-lua-natives
+          bun install --frozen-lockfile
+          bun run start
           cd ..
           mkdir -p lua/library/natives
           rm -rf lua/library/natives/*
-          mv -f rage-lua-natives-master/build/cfx/{CFX-NATIVE,GTAV,RDR3} lua/library/natives/
-          rm -rf rage-lua-natives-master
+          mv -f rage-lua-natives/build/cfx/{CFX-NATIVE,GTAV,RDR3} lua/library/natives/
+          rm -rf rage-lua-natives
           rm repo.zip
 
       - name: Update repository
